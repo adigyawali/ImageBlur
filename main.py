@@ -10,20 +10,23 @@ imageFile = "tokyoimg.jpg"
 
 
 def createKernel(sigma, size):
-    # Determine the kernel Size
-    kernelSize = size//2 # Ensures Size is odd to have a center
+    
+    # Ensures Size is odd to have a center
+    if size % 2 == 0:
+        raise ValueError("Kernel size must be odd")
+
+    # Convert it into grid coordinates where the middle pixel is the origin
+    offset = size//2
 
     # Create the Kernel
-    kernel = np.zeros(kernelSize, kernelSize)
+    kernel = np.zeros((size, size))
 
     #Iterate through each element in the kernel; ensure its a normal distrubution using normal formula
-    # Do -kernelSize to kernelSize + 1 to convert it into grid coordinates where the middle pixel is the origin
-        # - Required for Gaussain Formula
-    for x in range(-kernelSize, kernelSize + 1):
-        for y in range(-kernelSize, kernelSize + 1):
-            # Do +kernelSize to convert into array indices
+    for x in range(-offset, offset + 1):
+        for y in range(-offset, offset + 1):
+            # Do +offset to convert into array indices
             # Only use the normal part of the euqation, no need for the constant
-            kernel[x+kernelSize, y+kernelSize] = np.exp(-(x**2 + y**2) / (2 * (sigma**2)))
+            kernel[x+offset, y+offset] = np.exp(-(x**2 + y**2) / (2 * (sigma**2)))
 
     # Normalize the Kernel
     kernel = kernel / np.sum(kernel)
@@ -34,13 +37,16 @@ def createKernel(sigma, size):
 def convolution(kernel, imgArr):
     # Create a copy of the array so original isn't modified
     blurredArr = np.zeros(imgArr.shape)
-    kernelShape = kernel.shape
+    k = kernel.shape[0]
+
+    # Range of the grid around the origin
+    offset = k // 2 
 
     # Rows
-    for x in range(imgArr.shape[0]):
+    for y in range(imgArr.shape[0]):
 
         # Columns
-        for y in range(imgArr.shape[1]):
+        for x in range(imgArr.shape[1]):
             
             # Each color(c) in the grid
             for c in range(3):
@@ -49,15 +55,29 @@ def convolution(kernel, imgArr):
                 total = 0
 
                 # Iterage over the kernel (in grid coord)
+                for kernelposX in range(-offset, offset+1):
+                    
+                    for kernelposY in range(-offset, offset+1):
+                        
+                        # Current Coord of the pixel around the kernel size
+                        px = x + kernelposX
+                        py = y  + kernelposY
 
+                        # Do the calculation if the pixel is actually in the image
+                        if (0 <= px < imgArr.shape[1] and 0 <= py < imgArr.shape[0]):
+                            total += imgArr[py, px, c] * kernel[kernelposY+offset, kernelposX+offset]
+
+                blurredArr[y, x, c] = total
+
+    return blurredArr
 
 
 def main():
     # Size of Kernel
-    size = 3
+    size = 7
 
     # Sigma for the weight each pixel should have
-    sigma = 1
+    sigma = 2
 
     # Open the image and convert it to array
     img = Image.open(imageFile)
@@ -73,8 +93,9 @@ def main():
     print(f"Image Shape: {imgArr.shape}\n Blurred Image Shape: {blurredImgArr.shape}")
 
     # Should be the same as the original
-    blurredImg = Image.fromarray(blurredImgArr)
-    blurredImg.save("output.jpg")
+    blurredImgArr = np.clip(blurredImgArr, 0, 255)
+    blurredImg = Image.fromarray(blurredImgArr.astype(np.uint8))
+    blurredImg.save("output1.jpg")
 
 if __name__ == "__main__":
     main()
