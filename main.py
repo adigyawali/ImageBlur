@@ -6,7 +6,7 @@ from PIL import Image
 import numpy as np
 
 
-imageFile = "tokyoimg.jpg"
+imageFile = "tokyoimage.jpg"
 
 
 def createKernel(sigma, size):
@@ -74,7 +74,7 @@ def convolution(kernel, imgArr):
 
 def main():
     # Size of Kernel
-    size = 3
+    size = 7
 
     # Sigma for the weight each pixel should have
     sigma = 50
