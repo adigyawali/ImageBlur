@@ -89,13 +89,14 @@ def main():
     # Call the Convolution Function
     blurredImgArr = convolution(kernel, imgArr)
 
-    # Shapes of the two images
+    # Shapes of the two images, Should be the same as the original
     print(f"Image Shape: {imgArr.shape}\n Blurred Image Shape: {blurredImgArr.shape}")
 
-    # Should be the same as the original
+    # Convert the array back to an image and save the output
     blurredImgArr = np.clip(blurredImgArr, 0, 255)
     blurredImg = Image.fromarray(blurredImgArr.astype(np.uint8))
     blurredImg.save("output1.jpg")
+
 
 if __name__ == "__main__":
     main()
