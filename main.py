@@ -74,10 +74,10 @@ def convolution(kernel, imgArr):
 
 def main():
     # Size of Kernel
-    size = 7
+    size = 3
 
     # Sigma for the weight each pixel should have
-    sigma = 2
+    sigma = 50
 
     # Open the image and convert it to array
     img = Image.open(imageFile)
