@@ -77,7 +77,7 @@ def main():
     size = 7
 
     # Sigma for the weight each pixel should have
-    sigma = 1
+    sigma = 3
 
     # Open the image and convert it to array
     img = Image.open(imageFile)
@@ -95,7 +95,7 @@ def main():
     # Should be the same as the original
     blurredImgArr = np.clip(blurredImgArr, 0, 255)
     blurredImg = Image.fromarray(blurredImgArr.astype(np.uint8))
-    blurredImg.save("output.jpg")
+    blurredImg.save("output1.jpg")
 
 if __name__ == "__main__":
     main()
