@@ -4,9 +4,14 @@ From an Image, do gaussian blur manually and output result
 
 from PIL import Image
 import numpy as np
+import os
 
+# Get the absolute path to the current file
+script_dir = os.path.dirname(os.path.abspath(__file__))
 
-imageFile = "../Images/tokyoimage.jpg"
+# Build the path to the image relative to this file
+imageFile = os.path.join(script_dir, '..', 'Images', 'tokyoimage.jpg')
+
 
 
 def createKernel(sigma, size):
@@ -95,7 +100,8 @@ def main():
     # Convert the array back to an image and save the output
     blurredImgArr = np.clip(blurredImgArr, 0, 255)
     blurredImg = Image.fromarray(blurredImgArr.astype(np.uint8))
-    blurredImg.save("../Images/blurredImg.jpg")
+    blurred_path = os.path.join(script_dir, '..', 'Images', 'blurredImg.jpg')
+    blurredImg.save(blurred_path)
 
 
 if __name__ == "__main__":
