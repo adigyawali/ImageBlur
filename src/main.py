@@ -6,7 +6,7 @@ from PIL import Image
 import numpy as np
 
 
-imageFile = "tokyoimage.jpg"
+imageFile = "../Images/tokyoimage.jpg"
 
 
 def createKernel(sigma, size):
@@ -95,7 +95,7 @@ def main():
     # Convert the array back to an image and save the output
     blurredImgArr = np.clip(blurredImgArr, 0, 255)
     blurredImg = Image.fromarray(blurredImgArr.astype(np.uint8))
-    blurredImg.save("output1.jpg")
+    blurredImg.save("../Images/blurredImg.jpg")
 
 
 if __name__ == "__main__":
