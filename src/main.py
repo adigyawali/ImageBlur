@@ -10,7 +10,7 @@ import os
 script_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Build the path to the image relative to this file
-imageFile = os.path.join(script_dir, '..', 'Images', 'tokyoimage.jpg')
+imageFile = os.path.join(script_dir, 'Images', 'tokyoimage.jpg')
 
 
 
@@ -100,7 +100,7 @@ def main():
     # Convert the array back to an image and save the output
     blurredImgArr = np.clip(blurredImgArr, 0, 255)
     blurredImg = Image.fromarray(blurredImgArr.astype(np.uint8))
-    blurred_path = os.path.join(script_dir, '..', 'Images', 'blurredImg.jpg')
+    blurred_path = os.path.join(script_dir, 'Images', 'blurredImg.jpg')
     blurredImg.save(blurred_path)
 
 
